@@ -1,11 +1,10 @@
-#ifndef INIT
-#define INIT
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#endif
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <mc/shader.h>
+#include <shaders/shader.frag.h>
+#include <shaders/shader.vert.h>
 GLFWkeyfun keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
@@ -21,14 +20,20 @@ GLFWkeyfun keyCallback(GLFWwindow* window, int key, int scancode, int action, in
 
         // lets do just 2 monitors for now 
         //TODO:Support More monitors BUT do we really need that
-        printf("KEY RELEASED!\n");
+        if (count > 1){
+            printf("KEY RELEASED!\n");
         int idx = 0;
         if (monitor == monitors[0])
             idx = 1;
         printf("Index: %d\n", idx);
         const GLFWvidmode* mode = glfwGetVideoMode(monitors[idx]);
         glfwSetWindowMonitor(window, monitors[idx], mode -> width / 2, mode -> height / 2, mode -> width, mode -> height, mode -> refreshRate);
-    }
+   
+        }
+        else{
+            printf("No other monitors!\n");
+        }
+         }
 }
 
 GLFWmonitorfun monitorCallback(GLFWmonitor* monitor, int event)
@@ -46,8 +51,9 @@ GLFWmonitorfun monitorCallback(GLFWmonitor* monitor, int event)
 
 GLFWcursorposfun cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 {
-    printf("Cursor pos: (%0.2f, %0.2f)\n", xpos, ypos);
+    // printf("Cursor pos: (%0.2f, %0.2f)\n", xpos, ypos);
 }
+
 GLFWmousebuttonfun mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
@@ -109,5 +115,9 @@ GLFWwindow* init()
     glfwSetMouseButtonCallback(window, (void*)mouseButtonCallback);
     glfwSetScrollCallback(window, (void*)scrollCallback);
 
+    /* SHADER INIT*/
+    GLuint program = compileProgram(&__res_shaders_shader_vert, &__res_shaders_shader_vert_len, &__res_shaders_shader_frag, &__res_shaders_shader_frag_len);
+    glUseProgram(program);
+    glDeleteProgram(program);
     return window;
 }

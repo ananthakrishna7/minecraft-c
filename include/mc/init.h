@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifndef INIT_MC
-#define INIT_MC
+#ifndef MC_INIT
+#define MC_INIT
 
 // GLFWkeyfun keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 GLFWwindow* init();
