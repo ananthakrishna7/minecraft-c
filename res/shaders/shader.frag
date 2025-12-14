@@ -1,8 +1,8 @@
 #version 330 core
 
-in vec3 fCol;
-out vec4 frag_col;
+in vec3 frag_col;
+out vec4 FragColour;
 
 void main() {
-    frag_col = vec4(fCol, 1.0f);
+    FragColour = vec4(frag_col, 1.0f);
 }

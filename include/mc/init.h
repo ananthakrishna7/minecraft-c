@@ -6,6 +6,5 @@
 #ifndef MC_INIT
 #define MC_INIT
 
-// GLFWkeyfun keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 GLFWwindow* init();
 #endif

@@ -5,6 +5,8 @@
 #include <mc/shader.h>
 #include <shaders/shader.frag.h>
 #include <shaders/shader.vert.h>
+
+
 GLFWkeyfun keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
@@ -12,6 +14,11 @@ GLFWkeyfun keyCallback(GLFWwindow* window, int key, int scancode, int action, in
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
 
+    if (key == GLFW_KEY_R && action == GLFW_RELEASE)
+    {
+        // glfwSetWindowSize(window, 500, 500);
+        glfwSetWindowMonitor(window, NULL, 1000, 1000, 500, 500, GLFW_DONT_CARE);
+    }
     if (key == GLFW_KEY_F4 && action == GLFW_RELEASE)
     {
         int count;
@@ -36,6 +43,14 @@ GLFWkeyfun keyCallback(GLFWwindow* window, int key, int scancode, int action, in
          }
 }
 
+GLFWwindowfocusfun windowFocusCallback(GLFWwindow* window, int focus)
+{
+    if (focus == GL_TRUE)
+    {
+        glfwSetCursorPos(window, 0, 0);
+    }
+}
+
 GLFWmonitorfun monitorCallback(GLFWmonitor* monitor, int event)
 {
     if (event == GLFW_CONNECTED)
@@ -51,7 +66,10 @@ GLFWmonitorfun monitorCallback(GLFWmonitor* monitor, int event)
 
 GLFWcursorposfun cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 {
-    // printf("Cursor pos: (%0.2f, %0.2f)\n", xpos, ypos);
+    int height;
+    int width;
+    glfwGetWindowSize(window, &width, &height);
+    printf("Cursor displacement: (%0.2f, %0.2f)\n", width/2 - xpos, height/2 - ypos);
 }
 
 GLFWmousebuttonfun mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
@@ -86,6 +104,7 @@ GLFWwindow* init()
 
     const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 	GLFWwindow* window = glfwCreateWindow(mode -> width, mode -> height, "MinecraftC", glfwGetPrimaryMonitor(), NULL);
+	// GLFWwindow* window = glfwCreateWindow(500, 500, "MinecraftC", NULL, NULL); //NOTE: Comment this out.
 
     if (window == NULL)
     {
@@ -102,11 +121,13 @@ GLFWwindow* init()
         exit(EXIT_FAILURE);
 	}
 
-    glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 0.0f); // window  background colour
 
     // set cursor starting position
     glfwSetCursorPos(window, mode -> width / 2, mode -> height / 2);
 
+    // glfwSetCursorPos(window, 500 / 2, 500 / 2); //NOTE: comment this out
+    // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     /*CALLBACKS*/
 
     glfwSetKeyCallback(window, (void*)keyCallback);
@@ -114,6 +135,7 @@ GLFWwindow* init()
     glfwSetCursorPosCallback(window, (void*)cursorPosCallback);
     glfwSetMouseButtonCallback(window, (void*)mouseButtonCallback);
     glfwSetScrollCallback(window, (void*)scrollCallback);
+    glfwSetWindowFocusCallback(window, (void*)windowFocusCallback);
 
     /* SHADER INIT*/
     GLuint program = compileProgram(&__res_shaders_shader_vert, &__res_shaders_shader_vert_len, &__res_shaders_shader_frag, &__res_shaders_shader_frag_len);

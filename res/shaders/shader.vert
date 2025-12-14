@@ -1,8 +1,9 @@
 #version 330 core
 
-in vec3 fCol;
-out vec4 frag_col;
-
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 fCol;
+out vec3 frag_col;
 void main() {
-    frag_col = vec4(fCol, 1.0f);
+    gl_Position = vec4(aPos, 1.0);
+    frag_col = fCol;
 }

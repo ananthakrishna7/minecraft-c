@@ -6,6 +6,6 @@
 #ifndef MC_MAINLOOP
 #define MC_MAINLOOP
 
-void mainloop(GLFWwindow* window);
+void mainloop(GLFWwindow* window, int vao);
 
 #endif
