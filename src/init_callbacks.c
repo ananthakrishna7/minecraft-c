@@ -138,8 +138,11 @@ GLFWwindow* init()
     glfwSetWindowFocusCallback(window, (void*)windowFocusCallback);
 
     /* SHADER INIT*/
+
     GLuint program = compileProgram(&__res_shaders_shader_vert, &__res_shaders_shader_vert_len, &__res_shaders_shader_frag, &__res_shaders_shader_frag_len);
+    int textureLoc = glGetUniformLocation(program, "Texture");
     glUseProgram(program);
-    glDeleteProgram(program);
+    glUniform1i(textureLoc, 0);
+    // Keep program active; do not delete here.
     return window;
 }
