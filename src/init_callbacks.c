@@ -140,9 +140,10 @@ GLFWwindow* init()
     /* SHADER INIT*/
 
     GLuint program = compileProgram(&__res_shaders_shader_vert, &__res_shaders_shader_vert_len, &__res_shaders_shader_frag, &__res_shaders_shader_frag_len);
-    int textureLoc = glGetUniformLocation(program, "Texture");
+    // int textureLoc = glGetUniformLocation(program, "Texture"); // change
     glUseProgram(program);
-    glUniform1i(textureLoc, 0);
-    // Keep program active; do not delete here.
+    // glUniform1i(textureLoc, 0); // can make this another function in texture.c
+    // printf("Shader program: %u (sampler 'Texture' bound to unit 0)\n", program);
+    glDeleteProgram(program);
     return window;
 }
