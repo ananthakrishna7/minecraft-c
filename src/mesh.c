@@ -27,6 +27,8 @@ mesh* create_mesh(float* vertices, int len)
     glGenBuffers(1, &(new_mesh->ebo));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, new_mesh->ebo);
     // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    return new_mesh;
 }
 
 void destroy_mesh(mesh* mesh)
